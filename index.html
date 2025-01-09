@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convertitore Monete TikTok</title>
+    <title>TikTok Coin Converter</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -240,12 +240,12 @@
     </style>
 </head>
 <body>
-    <div id="loadingBar" class="loading">Aggiornamento tassi di cambio...</div>
+    <div id="loadingBar" class="loading">Exchange Rates Update...</div>
     <div class="container">
         <header class="header">
             <div class="logo">
                 <i class="fab fa-tiktok"></i>
-                <h1>Convertitore Monete TikTok</h1>
+                <h1>TikTok Coin Converter</h1>
             </div>
             <button class="theme-toggle" id="themeToggle">
                 <i class="fas fa-moon"></i>
@@ -257,7 +257,7 @@
                 <div class="coin-section">
                     <img src="image.png" alt="TikTok Coin" class="coin-image">
                     <div class="input-field">
-                        <input type="number" id="coinInput" placeholder="Numero di monete" min="0">
+                        <input type="number" id="coinInput" placeholder="Number of coins" min="0">
                     </div>
                 </div>
 
@@ -269,22 +269,22 @@
                     <div class="input-field">
                         <select id="currencySelect">
                             <option value="EUR">€ Euro</option>
-                            <option value="USD">$ Dollaro USA</option>
-                            <option value="ALL">L Lek Albanese</option>
-                            <option value="BAM">KM Marco Bosniaco</option>
-                            <option value="BGN">лв Lev Bulgaro</option>
-                            <option value="HRK">kn Kuna Croata</option>
-                            <option value="MKD">ден Denaro Macedone</option>
-                            <option value="MDL">L Leu Moldavo</option>
-                            <option value="RON">lei Leu Romeno</option>
-                            <option value="RSD">дин. Dinaro Serbo</option>
-                            <option value="GBP">£ Sterlina</option>
-                            <option value="JPY">¥ Yen Giapponese</option>
-                            <option value="CNY">¥ Yuan Cinese</option>
-                            <option value="AUD">$ Dollaro Australiano</option>
-                            <option value="CAD">$ Dollaro Canadese</option>
-                            <option value="CHF">Fr. Franco Svizzero</option>
-                            <option value="INR">₹ Rupia Indiana</option>
+                            <option value="USD">$ US Dollar</option>
+                            <option value="ALL">L Albanian Lek</option>
+                            <option value="BAM">KM Bosnian Convertible Mark</option>
+                            <option value="BGN">лв Bulgarian Lev</option>
+                            <option value="HRK">kn Croatian Kuna</option>
+                            <option value="MKD">ден Macedonian Denar</option>
+                            <option value="MDL">L Moldovan Leu</option>
+                            <option value="RON">lei Romanian Leu</option>
+                            <option value="RSD">дин. Serbian Dinar</option>
+                            <option value="GBP">£ British Pound</option>
+                            <option value="JPY">¥ Japanese Yen</option>
+                            <option value="CNY">¥ Chinese Yuan</option>
+                            <option value="AUD">$ Australian Dollar</option>
+                            <option value="CAD">$ Canadian Dollar</option>
+                            <option value="CHF">Fr. Swiss Franc</option>
+                            <option value="INR">₹ Indian Rupee</option>
                         </select>
                     </div>
                     <div class="currency-symbol" id="currencySymbol">€</div>
@@ -296,7 +296,7 @@
                     <input type="checkbox" id="liveMode">
                     <span class="slider"></span>
                 </label>
-                <span>Modalità Conversione regali live</span>
+                <span>Live gift conversion mode</span>
             </div>
 
             <div class="result" id="result">0.00</div>
@@ -348,10 +348,10 @@
                     exchangeRates = data.conversion_rates;
                     calculateValue();
                 } else {
-                    console.error('Errore API:', data["error-type"]);
+                    console.error('API Error:', data["error-type"]);
                 }
             } catch (error) {
-                console.error('Errore nel caricamento tassi:', error);
+                console.error('Error loading rates:', error);
             } finally {
                 loadingBar.classList.remove('visible');
             }
@@ -362,7 +362,7 @@
             const currency = currencySelect.value;
             const isLive = liveModeToggle.checked;
 
-            let value = coins * 0.01; // 1 moneta = 0.01 USD
+            let value = coins * 0.01; // 1 coin = 0.01 USD
             if (isLive) {
                 value *= 0.5;
             }
