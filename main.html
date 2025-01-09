@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertitore Monete TikTok</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --text-color: #1f2937;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #818cf8;
+            --text-color: #f3f4f6;
+            --bg-color: #111827;
+            --card-bg: #1f2937;
+            --border-color: #374151;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 0.5rem;
+            font-size: 1.2rem;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .converter-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .coin-section, .currency-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background-color: var(--bg-color);
+            border-radius: 1rem;
+        }
+
+        .coin-image {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .arrow-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .input-field {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        input, select {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        .currency-symbol {
+            font-size: 1.5rem;
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border-color);
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .result {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 0.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            transform: translateY(-100%);
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .loading.visible {
+            transform: translateY(0);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loadingBar" class="loading">Aggiornamento tassi di cambio...</div>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fab fa-tiktok"></i>
+                <h1>Convertitore Monete TikTok</h1>
+            </div>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </header>
+
+        <div class="card">
+            <div class="converter-container">
+                <div class="coin-section">
+                    <img src="image.png" alt="TikTok Coin" class="coin-image">
+                    <div class="input-field">
+                        <input type="number" id="coinInput" placeholder="Numero di monete" min="0">
+                    </div>
+                </div>
+
+                <div class="arrow-section">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+
+                <div class="currency-section">
+                    <div class="input-field">
+                        <select id="currencySelect">
+                            <option value="EUR">€ Euro</option>
+                            <option value="USD">$ Dollaro USA</option>
+                            <option value="ALL">L Lek Albanese</option>
+                            <option value="BAM">KM Marco Bosniaco</option>
+                            <option value="BGN">лв Lev Bulgaro</option>
+                            <option value="HRK">kn Kuna Croata</option>
+                            <option value="MKD">ден Denaro Macedone</option>
+                            <option value="MDL">L Leu Moldavo</option>
+                            <option value="RON">lei Leu Romeno</option>
+                            <option value="RSD">дин. Dinaro Serbo</option>
+                            <option value="GBP">£ Sterlina</option>
+                            <option value="JPY">¥ Yen Giapponese</option>
+                            <option value="CNY">¥ Yuan Cinese</option>
+                            <option value="AUD">$ Dollaro Australiano</option>
+                            <option value="CAD">$ Dollaro Canadese</option>
+                            <option value="CHF">Fr. Franco Svizzero</option>
+                            <option value="INR">₹ Rupia Indiana</option>
+                        </select>
+                    </div>
+                    <div class="currency-symbol" id="currencySymbol">€</div>
+                </div>
+            </div>
+
+            <div class="toggle-container">
+                <label class="toggle">
+                    <input type="checkbox" id="liveMode">
+                    <span class="slider"></span>
+                </label>
+                <span>Modalità Conversione regali live</span>
+            </div>
+
+            <div class="result" id="result">0.00</div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = process.env.EXCHANGE_RATE_API_KEY || '';
+        const API_URL = `https://v6.exchangerate-api.com/v6/${API_KEY}/latest/USD`;
+        
+        const currencySymbols = {
+            EUR: '€',
+            USD: '$',
+            ALL: 'L',
+            BAM: 'KM',
+            BGN: 'лв',
+            HRK: 'kn',
+            MKD: 'ден',
+            MDL: 'L',
+            RON: 'lei',
+            RSD: 'дин.',
+            GBP: '£',
+            JPY: '¥',
+            CNY: '¥',
+            AUD: '$',
+            CAD: '$',
+            CHF: 'Fr.',
+            INR: '₹'
+        };
+
+        const themeToggle = document.getElementById('themeToggle');
+        const coinInput = document.getElementById('coinInput');
+        const currencySelect = document.getElementById('currencySelect');
+        const liveModeToggle = document.getElementById('liveMode');
+        const resultElement = document.getElementById('result');
+        const currencySymbolElement = document.getElementById('currencySymbol');
+        const loadingBar = document.getElementById('loadingBar');
+
+        let exchangeRates = {};
+        let isDark = false;
+
+        async function loadExchangeRates() {
+            try {
+                loadingBar.classList.add('visible');
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                
+                if (data.result === "success") {
+                    exchangeRates = data.conversion_rates;
+                    calculateValue();
+                } else {
+                    console.error('Errore API:', data["error-type"]);
+                }
+            } catch (error) {
+                console.error('Errore nel caricamento tassi:', error);
+            } finally {
+                loadingBar.classList.remove('visible');
+            }
+        }
+
+        function calculateValue() {
+            const coins = parseFloat(coinInput.value) || 0;
+            const currency = currencySelect.value;
+            const isLive = liveModeToggle.checked;
+
+            let value = coins * 0.01; // 1 moneta = 0.01 USD
+            if (isLive) {
+                value *= 0.5;
+            }
+
+            if (exchangeRates[currency]) {
+                value *= exchangeRates[currency];
+            }
+
+            resultElement.textContent = `${value.toFixed(2)} ${currencySymbols[currency]}`;
+            currencySymbolElement.textContent = currencySymbols[currency];
+        }
+
+        // Theme toggle
+        themeToggle.addEventListener('click', () => {
+            isDark = !isDark;
+            document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        });
+
+        // Event listeners
+        coinInput.addEventListener('input', calculateValue);
+        currencySelect.addEventListener('change', calculateValue);
+        liveModeToggle.addEventListener('change', calculateValue);
+
+        // Initial loading
+        loadExchangeRates();
+        
+        // Auto refresh rates every hour
+        setInterval(loadExchangeRates, 3600000);
+    </script>
+</body>
+</html>
