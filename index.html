@@ -257,7 +257,7 @@
                 <div class="coin-section">
                     <img src="image.png" alt="TikTok Coin" class="coin-image">
                     <div class="input-field">
-                        <input type="number" id="coinInput" placeholder="Number of coins" min="0">
+                        <input type="number" id="coinInput" placeholder="Number of Coins" min="0">
                     </div>
                 </div>
 
@@ -269,9 +269,9 @@
                     <div class="input-field">
                         <select id="currencySelect">
                             <option value="EUR">€ Euro</option>
-                            <option value="USD">$ US Dollar</option>
+                            <option value="USD">$ USA Dollar</option>
                             <option value="ALL">L Albanian Lek</option>
-                            <option value="BAM">KM Bosnian Convertible Mark</option>
+                            <option value="BAM">KM Bosnian Mark</option>
                             <option value="BGN">лв Bulgarian Lev</option>
                             <option value="HRK">kn Croatian Kuna</option>
                             <option value="MKD">ден Macedonian Denar</option>
@@ -296,7 +296,7 @@
                     <input type="checkbox" id="liveMode">
                     <span class="slider"></span>
                 </label>
-                <span>Live gift conversion mode</span>
+                <span>Live Gift Conversion Mode</span>
             </div>
 
             <div class="result" id="result">0.00</div>
@@ -364,7 +364,7 @@
 
             let value = coins * 0.01; // 1 coin = 0.01 USD
             if (isLive) {
-                value *= 0.5;
+                value *= 0.66;
             }
 
             if (exchangeRates[currency]) {
